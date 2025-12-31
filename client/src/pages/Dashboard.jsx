@@ -114,7 +114,7 @@ const Dashboard = () => {
 
   const verifyID = async () => {
     console.log("Start Verif");
-    location.href = "https://kapital-kyc.vercel.app";
+    location.href = "https://prime-vest-kyc.vercel.app";
   };
 
   const formatVolume = (value) => {

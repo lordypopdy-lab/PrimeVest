@@ -55,9 +55,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Allow multiple origins
 const allowedOrigins = [
-  "https://kapital-fluss.vercel.app",
-  "https://kapital-kyc.vercel.app",
-  "https://kapital-fluss-admin.vercel.app",
+  "https://prime-vest-kyc.vercel.app",
+  "https://prime-vest-neon.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
 ];

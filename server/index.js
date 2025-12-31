@@ -17,9 +17,8 @@ mongoose.connect(process.env.MONGO_URL)
 
 // Allow CORS globally
 const allowedOrigins = [
-  "https://kapital-kyc.vercel.app",
-  "https://kapital-fluss.vercel.app",
-  "https://kapital-fluss-admin.vercel.app",
+  "https://prime-vest-kyc.vercel.app",
+  "https://prime-vest-neon.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000",
 ];
