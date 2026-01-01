@@ -133,38 +133,42 @@ const Dashboard = () => {
 
     return matchSearch && matchStatus;
   });
-console.log(filteredUsers)
-  const filteredBank = bankR.filter((v) => {
-    const cleanStatus = v.status?.replace(/"/g, "").toLowerCase();
 
-    const matchSearch =
-      v.userName?.toLowerCase().includes(Banksearch.toLowerCase()) ||
-      v.email?.toLowerCase().includes(Banksearch.toLowerCase()) ||
-      v._id?.toLowerCase().includes(Banksearch.toLowerCase());
+  const filteredBank = Array.isArray(bankR)
+    ? bankR.filter((v) => {
+        const cleanStatus = v.status?.replace(/"/g, "").toLowerCase();
 
-    const matchStatus =
-      BankstatusFilter === "all"
-        ? true
-        : cleanStatus === BankstatusFilter.toLowerCase();
+        const matchSearch =
+          v.userName?.toLowerCase().includes(Banksearch.toLowerCase()) ||
+          v.email?.toLowerCase().includes(Banksearch.toLowerCase()) ||
+          v._id?.toLowerCase().includes(Banksearch.toLowerCase());
 
-    return matchSearch && matchStatus;
-  });
+        const matchStatus =
+          BankstatusFilter === "all"
+            ? true
+            : cleanStatus === BankstatusFilter.toLowerCase();
 
-  const filteredCrypto = cryptoR.filter((v) => {
-    const cleanStatus = v.status?.replace(/"/g, "").toLowerCase();
+        return matchSearch && matchStatus;
+      })
+    : [];
 
-    const matchSearch =
-      v.userName?.toLowerCase().includes(cryptoSearch.toLowerCase()) ||
-      v.email?.toLowerCase().includes(cryptoSearch.toLowerCase()) ||
-      v._id?.toLowerCase().includes(cryptoSearch.toLowerCase());
+  const filteredCrypto = Array.isArray(cryptoR)
+    ? cryptoR.filter((v) => {
+        const cleanStatus = v.status?.replace(/"/g, "").toLowerCase();
 
-    const matchStatus =
-      cryptoFilter === "all"
-        ? true
-        : cleanStatus === cryptoFilter.toLowerCase();
+        const matchSearch =
+          v.userName?.toLowerCase().includes(cryptoSearch.toLowerCase()) ||
+          v.email?.toLowerCase().includes(cryptoSearch.toLowerCase()) ||
+          v._id?.toLowerCase().includes(cryptoSearch.toLowerCase());
 
-    return matchSearch && matchStatus;
-  });
+        const matchStatus =
+          cryptoFilter === "all"
+            ? true
+            : cleanStatus === cryptoFilter.toLowerCase();
+
+        return matchSearch && matchStatus;
+      })
+    : [];
 
   const handleDecline = async (id) => {
     setLoading(true);
@@ -282,7 +286,7 @@ console.log(filteredUsers)
     try {
       setLoading(true);
       const { data } = await axios.post("/deleteUser", { userID });
-      
+
       if (data.success) {
         toast.success(data.msg);
       } else {
@@ -295,7 +299,6 @@ console.log(filteredUsers)
       setLoading(false);
     }
   };
-  
 
   return (
     <div
@@ -364,7 +367,7 @@ console.log(filteredUsers)
                   <Card.Header className="d-flex align-items-center justify-content-between bg-black border-secondary">
                     <h5 className="mb-0 text-light">All Users</h5>
                     <Badge bg="success">
-                     Total Users:{filteredUsers.length}
+                      Total Users:{filteredUsers.length}
                     </Badge>
                   </Card.Header>
 
@@ -451,9 +454,18 @@ console.log(filteredUsers)
                                   <User size={16} className="me-2 text-muted" />
                                   {v.name}
                                 </td>
-                                <td>{v.currency}{v.bonuse}</td>
-                                <td>{v.currency}{v.deposit}</td>
-                                <td>{v.currency}{v.profit}</td>
+                                <td>
+                                  {v.currency}
+                                  {v.bonuse}
+                                </td>
+                                <td>
+                                  {v.currency}
+                                  {v.deposit}
+                                </td>
+                                <td>
+                                  {v.currency}
+                                  {v.profit}
+                                </td>
                                 <td>{v.email}</td>
                                 <td>
                                   {new Date(v.req_date).toLocaleString(
@@ -477,7 +489,7 @@ console.log(filteredUsers)
                                   </Link>
                                 </td>
                                 <td className="text-end">
-                                  <Link onClick={()=>deleteUser(v._id)}>
+                                  <Link onClick={() => deleteUser(v._id)}>
                                     <Button size="sm" variant="outline-danger">
                                       <FileText size={16} className="me-1" />{" "}
                                       Delete
@@ -507,11 +519,11 @@ console.log(filteredUsers)
                   <Card.Header className="d-flex align-items-center justify-content-between bg-black border-secondary">
                     <h5 className="mb-0 text-light">All Users</h5>
                     <Badge bg="warning">
-                      {
-                        (bankR || []).filter(
-                          (v) => v.status?.toLowerCase().trim() === "pending"
-                        ).length
-                      }
+                      {Array.isArray(bankR)
+                        ? bankR.filter(
+                            (v) => v.status?.toLowerCase().trim() === "pending"
+                          ).length
+                        : 0}
                       : Pending
                     </Badge>
                   </Card.Header>
@@ -664,11 +676,11 @@ console.log(filteredUsers)
                   <Card.Header className="d-flex align-items-center justify-content-between bg-black border-secondary">
                     <h5 className="mb-0 text-light">All Logs</h5>
                     <Badge bg="warning">
-                      {
-                        (cryptoR || []).filter(
-                          (v) => v.status?.toLowerCase().trim() === "pending"
-                        ).length
-                      }
+                      {Array.isArray(cryptoR)
+                        ? cryptoR.filter(
+                            (v) => v.status?.toLowerCase().trim() === "pending"
+                          ).length
+                        : 0}
                       : Pending
                     </Badge>
                   </Card.Header>

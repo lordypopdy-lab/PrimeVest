@@ -21,7 +21,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 axios.defaults.baseURL = 'https://prime-vest-server.vercel.app';
 axios.defaults.withCredentials = true;
-//http://localhost:8080 
+//http://localhost:8080  
 import '../src/fonts/fonts.css';
 import '../src/fonts/font-icons.css';
 import '../src/css/bootstrap.min.css';
