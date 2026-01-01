@@ -53,7 +53,6 @@ import {
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Allow multiple origins
 const allowedOrigins = [
   "https://prime-vest-kyc.vercel.app",
   "https://prime-vest-neon.vercel.app",
@@ -61,23 +60,23 @@ const allowedOrigins = [
   "http://localhost:5174",
 ];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS blocked: " + origin));
-    }
-  },
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-router.use(cors(corsOptions));
-
-router.options("*", cors(corsOptions));
+// Handle OPTIONS preflight for all routes
+app.options(
+  "*",
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 /* ----------------- Routes ----------------- */
 router.get("/test", test);

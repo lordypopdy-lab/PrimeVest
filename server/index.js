@@ -1,4 +1,3 @@
-// index.js
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -15,27 +14,18 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Database Connected successfully!'))
   .catch((error) => console.log('Database not connected', error));
 
-// Allow CORS globally
-const allowedOrigins = [
-  "https://prime-vest-kyc.vercel.app",
-  "https://prime-vest-neon.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:3000",
-];
-
+// Robust CORS
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow non-browser clients
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS blocked: " + origin));
-    }
-  },
+  origin: [
+    "https://prime-vest-kyc.vercel.app",
+    "https://prime-vest-neon.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:3000",
+  ],
   credentials: true,
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"]
 }));
 
 // Parse JSON & URL-encoded data
@@ -47,7 +37,7 @@ app.use(cookieParser());
 app.use("/", authRoute);
 
 // Start server
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`PrimeVest Markets is Running at Port: ${PORT}`);
 });
