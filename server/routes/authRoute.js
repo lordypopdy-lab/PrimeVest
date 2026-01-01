@@ -1,7 +1,5 @@
 import express from "express";
-import cors from "cors";
 import multer from "multer";
-
 import {
   test,
   Delete,
@@ -52,31 +50,6 @@ import {
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
-
-const allowedOrigins = [
-  "https://prime-vest-kyc.vercel.app",
-  "https://prime-vest-neon.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:5174",
-];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-
-// Handle OPTIONS preflight for all routes
-app.options(
-  "*",
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
 
 /* ----------------- Routes ----------------- */
 router.get("/test", test);
