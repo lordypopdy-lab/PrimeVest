@@ -6,7 +6,7 @@ import { TonConnectUIProvider } from "@tonconnect/ui-react";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <TonConnectUIProvider manifestUrl="https://kapital-fluss.vercel.app/tonconnect-manifest.json">
+    <TonConnectUIProvider manifestUrl="https://prime-vest-theta.vercel.app/tonconnect-manifest.json">
       <App />
     </TonConnectUIProvider>
   </StrictMode>,
