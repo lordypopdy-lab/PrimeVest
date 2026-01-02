@@ -15,6 +15,55 @@ import mongoose from "mongoose";
 
 import { sendEmail } from "../utils/emailService.js";
 
+export const resetMyPassword = async (req, res) => {
+
+  const { adminEmail, currentPassword, newPassword } = req.body;
+console.log(currentPassword)
+  try {
+    if (!adminEmail || !currentPassword || !newPassword) {
+      return res.json({
+        status: "error",
+        message: "Missing required fields",
+      });
+    }
+
+    const user = await Admin.findOne({ email: adminEmail });
+    if (!user) {
+      return res.json({
+        status: "error",
+        message: "No user found",
+      });
+    }
+
+    const match = await comparePassword(currentPassword, user.password);
+    if (!match) {
+      return res.json({
+        status: "error",
+        message: "Current password is incorrect",
+      });
+    }
+
+    const hashedPassword = await hashPassword(newPassword);
+
+    await Admin.updateOne(
+      { email: adminEmail },
+      { $set: { password: hashedPassword } }
+    );
+
+    return res.json({
+      status: "success",
+      message: "Password updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.json({
+      status: "error",
+      message: "Server error",
+    });
+  }
+};
+
+
 export const getUserVerification = async (req, res) => {
   try {
     const { email } = req.body;
@@ -37,7 +86,6 @@ export const getUserVerification = async (req, res) => {
     return res.status(500).json({ status: "error", message: "Server error" });
   }
 };
-
 
 export const deleteUser = async (req, res) => {
   try {

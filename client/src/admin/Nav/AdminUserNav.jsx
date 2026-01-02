@@ -44,7 +44,7 @@ const logout = async () => {
       >
         {/* User Info Section */}
         <div className="px-3 py-3 border-bottom border-secondary">
-          <p className="text-light fw-semibold mb-0">John Doe</p>
+          <p className="text-light fw-semibold mb-0">ADMIN</p>
           <p className="text-muted small mb-0">john.doe@example.com</p>
         </div>
 

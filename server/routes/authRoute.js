@@ -29,6 +29,7 @@ import {
   getMessages,
   deleteMessage,
   adminReply,
+  resetMyPassword,
   deleteUser,
   getAdminChat,
   ressetPassword,
@@ -92,6 +93,7 @@ router.post("/ressetPassword", ressetPassword);
 router.post("/getAccountLevel", getAccountLevel);
 router.post("/getNotification", getNotification);
 router.post("/userNotification", userNotification);
+router.post("/resetMyPassword", resetMyPassword);
 router.post("/getCryptoRecords", getCryptoRecords);
 router.post("/updateAddressInfo", updateAddressInfo);
 router.post("/getUserVerification", getUserVerification);

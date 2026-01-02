@@ -37,6 +37,11 @@ const Dashboard = () => {
   const [BankstatusFilter, BanksetStatusFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const [adder, setAdder] = useState({ id: "", value: "", type: "" });
+  const [ressetPassword, setRessetPassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -300,6 +305,68 @@ const Dashboard = () => {
     }
   };
 
+  const ressetMyPassword = async () => {
+    setLoading(true);
+  
+    const Admin = JSON.parse(localStorage.getItem("admin1"));
+    if (!Admin || !Admin.email) {
+      toast.error("Admin not logged in");
+      setLoading(false);
+      return;
+    }
+  
+    const adminEmail = Admin.email;
+    const { currentPassword, newPassword, confirmPassword } = ressetPassword;
+
+    if (!currentPassword) {
+      toast.error("Enter Current Password!");
+      setLoading(false);
+      return;
+    }
+  
+    if (!newPassword) {
+      toast.error("Enter New Password!");
+      setLoading(false);
+      return;
+    }
+  
+    if (!confirmPassword) {
+      toast.error("Enter Confirm Password!");
+      setLoading(false);
+      return;
+    }
+  
+    if (newPassword !== confirmPassword) {
+      toast.error("Confirm password must match new password!");
+      setLoading(false);
+      return;
+    }
+  
+    try {
+      const res = await axios.post("/resetMyPassword", {
+        adminEmail,
+        currentPassword,
+        newPassword,
+      });
+  
+      if (res.data.status === "success") {
+        toast.success("Password Updated Successfully");
+        setRessetPassword({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      } else {
+        toast.error(res.data.message || "Password update failed");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error( "Server error");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   return (
     <div
       className="d-flex flex-column min-vh-100 dark"
@@ -317,7 +384,7 @@ const Dashboard = () => {
           className="d-flex align-items-center gap-2 fw-semibold"
         >
           <Bitcoin className="h-6 w-6" style={{ color: "orange" }} />
-          <span className="text-light">Kaptial-Fluss</span>
+          <span className="text-light">PrimeVest-Markets</span>
         </Navbar.Brand>
 
         <Nav className="ms-auto d-flex align-items-center gap-4">
@@ -894,6 +961,83 @@ const Dashboard = () => {
                   <Button
                     variant="primary"
                     onClick={addBalance}
+                    className="w-100 mt-4 btn-bitradex-warning"
+                  >
+                    Save Changes
+                  </Button>
+                </Form>
+              </Tab>
+              <Tab eventKey="settings" title="Settings">
+                <Form className="card-gradient">
+                  <Form.Group
+                    className="mb-3"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <InputGroup className="mb-3">
+                      <InputGroup.Text className="bg-dark text-light">
+                        Current Password
+                      </InputGroup.Text>
+                      <Form.Control
+                        value={ressetPassword.currentPassword}
+                        onChange={(e) =>
+                          setRessetPassword({
+                            ...ressetPassword,
+                            currentPassword: e.target.value,
+                          })
+                        }
+                        type="password"
+                        className="bg-dark text-light"
+                        aria-label="Amount (to the nearest dollar)"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-3 text-light"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <InputGroup className="mb-3">
+                      <InputGroup.Text className="bg-dark text-light">
+                        New Password
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="password"
+                        value={ressetPassword.newPassword}
+                        onChange={(e) =>
+                          setRessetPassword({
+                            ...ressetPassword,
+                            newPassword: e.target.value,
+                          })
+                        }
+                        className="bg-dark text-light"
+                        aria-label="Amount (to the nearest dollar)"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group
+                    className="mb-3 text-light"
+                    controlId="exampleForm.ControlInput1"
+                  >
+                    <InputGroup className="mb-3">
+                      <InputGroup.Text className="bg-dark text-light">
+                        Confirm Password
+                      </InputGroup.Text>
+                      <Form.Control
+                        type="password"
+                        value={ressetPassword.confirmPassword}
+                        onChange={(e) =>
+                          setRessetPassword({
+                            ...ressetPassword,
+                            confirmPassword: e.target.value,
+                          })
+                        }
+                        className="bg-dark text-light"
+                        aria-label="Amount (to the nearest dollar)"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    onClick={ressetMyPassword}
                     className="w-100 mt-4 btn-bitradex-warning"
                   >
                     Save Changes
