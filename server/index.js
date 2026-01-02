@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_URL)
 // Allowed origins
 const allowedOrigins = [
   "https://prime-vest-kyc.vercel.app",
-  "https://prime-vest-neon.vercel.app",
+  "https://prime-vest-theta.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:3000",
