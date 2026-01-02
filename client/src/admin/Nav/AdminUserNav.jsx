@@ -5,9 +5,9 @@ import { User, CreditCard, Settings, LogOut } from "lucide-react";
 
 const AdminUserNav = () => {
 
-  if (!localStorage.getItem("admin1")) {
-    window.location.href = "/login-admin";
-}
+//   if (!localStorage.getItem("admin1")) {
+//     window.location.href = "/login-admin";
+// }
 
 const logout = async () => {
   localStorage.removeItem("admin1");

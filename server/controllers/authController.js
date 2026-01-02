@@ -63,7 +63,6 @@ console.log(currentPassword)
   }
 };
 
-
 export const getUserVerification = async (req, res) => {
   try {
     const { email } = req.body;
