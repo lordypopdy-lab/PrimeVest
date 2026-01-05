@@ -25,10 +25,10 @@ const Deposit = () => {
   const [walletAddress, setWalletAddress] = React.useState("");
 
   const walletMap = {
-    bitcoin: "1Bk67rKUfXRRCRPrtXFeeyGQ5Vn3J7Zrht",
-    ethereum: "0x81df9918f6e00ae1f866258335dd5aa2684f92b1",
-    usdt: "TG2mu1G75JW8KsqvBjbxWPNxxrb8ni7CAk",
-    trc20: "TAjZkvRtK5cdoG11udBx628Ncw8mPSh2Sc"
+    bitcoin: "bc1qvtl33d6t89xxg4wvx8gs7kv974azxj9umzaunj",
+    ethereum: "0xb01e9facb99e016e2804b305d4d0047273530386",
+    usdt: "TQuGk6jMREmiwBxcomVtEdzp4iH28PZeo3",
+    trc20: "TQuGk6jMREmiwBxcomVtEdzp4iH28PZeo3"
   };
 
   if (!localStorage.getItem("user")) {
