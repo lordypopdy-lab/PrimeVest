@@ -485,7 +485,8 @@ const Withdraw = () => {
                               Processing Fee:
                             </Col>
                             <Col className="text-end">
-                              ${user && user.transaction_fee}
+                              {user?.currency ? user.currency + " " : ""}
+                              {user && user.transaction_fee}
                             </Col>
                           </Row>
                           <hr />
