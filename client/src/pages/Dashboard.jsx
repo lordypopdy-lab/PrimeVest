@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [balance, setBalance] = useState(0);
   const [priceBackup, setPriceBack] = useState({});
   const [pricesTicker, setPricesTicker] = useState({});
+  const [isNotification, setNotification] = useState("");
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [userVerification, setVerificationStatus] = useState({});
 
@@ -56,7 +57,14 @@ const Dashboard = () => {
       }
     };
 
-    verifyCaptchaAccess();
+    const getNotification = async () => {
+      await axios.post("/getNotification", { ID }).then((data) => {
+        if (data.data.notification) {
+          console.log(data.data.notification)
+          setNotification(data.data.notification);
+        }
+      });
+    };
 
     const getUser = async () => {
       await axios.post("/getUser", { email }).then((data) => {
@@ -123,6 +131,8 @@ const Dashboard = () => {
     };
 
     getUser();
+    getNotification();
+    verifyCaptchaAccess();
     getUserVerification();
 
     const cleanup = FavTokens();
@@ -592,12 +602,7 @@ const Dashboard = () => {
           {/* GETTING STARTED CARD */}
           <Card className="bg-black shadow-light">
             <Card.Header>
-              <h5
-                className="mb-0 text-light"
-              >
-               Notification 🔔✨
-
-              </h5>
+              <h5 className="mb-0 text-light">Notification 🔔✨</h5>
             </Card.Header>
 
             <Card.Body>
@@ -608,12 +613,13 @@ const Dashboard = () => {
                   <div className="w-6 h-6 rounded-circle bg-bitradex-orange text-white d-flex justify-content-center align-items-center small text-light fw-bold">
                     ✔
                   </div>
-                  <h6 className="ms-2 mb-0 text-sm text-light fw-medium">
+                  <h6 className="ms-2 mb-0 text-sm text-success fw-medium">
                     Notification Display Here..
-                  </h6> <hr />
+                  </h6>{" "}
+                  <hr />
                 </div>
                 <p className="mt-2 text-xs text-light">
-                  Complete KYC verification to enable deposits and withdrawals.
+                  {isNotification && isNotification}
                 </p>
               </div>
             </Card.Body>

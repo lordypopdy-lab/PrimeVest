@@ -40,7 +40,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [adder, setAdder] = useState({ id: "", value: "", type: "" });
   const [mailer, setMailer] = useState({ email: "", message: "" });
-  const [notify, setNotify] = useState({ id: "", message: "" });
+  const [notification, setNotification] = useState({ id: "", value: "" });
   const [ressetPassword, setRessetPassword] = useState({
     currentPassword: "",
     newPassword: "",
@@ -401,7 +401,19 @@ const Dashboard = () => {
   };
 
   const sendNotification = async () => {
-    console.log(notify);
+        const { id, value } = notification;
+        console.log(id)
+        await axios.post("/userNotification", { id, value }).then((data) => {
+            if (data.data.success) {
+                toast.success(data.data.success);
+                setNotification({
+                    id: "",
+                    value: "",
+                })
+            } else if (data.data.error) {
+                toast.error(data.data.error);
+            }
+        })
   };
 
   return (
@@ -1231,9 +1243,9 @@ const Dashboard = () => {
                         <Form.Control
                           type="text"
                           placeholder="Enter recipient ID"
-                          value={notify.id}
+                          value={notification.id}
                           onChange={(e) =>
-                            setNotify({ ...notify, id: e.target.value })
+                            setNotification({ ...notification, id: e.target.value })
                           }
                           className="bg-secondary text-light border-0"
                         />
@@ -1249,9 +1261,9 @@ const Dashboard = () => {
                           as="textarea"
                           rows={5}
                           placeholder="Write your message here..."
-                          value={notify.message}
+                          value={notification.value}
                           onChange={(e) =>
-                            setNotify({ ...notify, message: e.target.value })
+                            setNotification({ ...notification, value: e.target.value })
                           }
                           className="bg-secondary text-light border-0"
                         />

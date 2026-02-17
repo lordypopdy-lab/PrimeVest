@@ -18,6 +18,7 @@ import nodemailer from "nodemailer";
 
 import { sendEmail } from "../utils/emailService.js";
 
+
 const sendMail = async (req, res) => {
   try {
     const { email, message } = req.body;
@@ -712,6 +713,7 @@ const getNotification = async (req, res) => {
   const getNoti = await adminMessage.findOne({ userID: ID });
 
   if (getNoti) {
+    console.log(getNoti)
     return res.json(getNoti);
   }
 
@@ -807,7 +809,7 @@ const userNotification = async (req, res) => {
     });
   }
 
-  check01 = await adminMessage.findOne({ userID: id });
+  const check01 = await adminMessage.findOne({ userID: id });
   if (check01) {
     await adminMessage.updateOne(
       { userID: id },
