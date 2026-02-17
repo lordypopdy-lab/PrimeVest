@@ -27,7 +27,7 @@ export default function Captcha() {
     if (lastVerified) {
       const diff = Date.now() - parseInt(lastVerified);
       if (diff < HOURS_48) {
-        navigate("/dashboard");
+        location.href = "/dashboard";
         return;
       }
     }
@@ -48,7 +48,7 @@ export default function Captcha() {
 
       // ⏳ Delay redirect (2 seconds)
       setTimeout(() => {
-        navigate("/dashboard");
+        location.href = "/dashboard";
       }, 2000);
     } else {
       setError("Incorrect verification code.");
