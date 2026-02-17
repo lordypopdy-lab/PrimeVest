@@ -26,7 +26,7 @@ import toast from "react-hot-toast";
 
 const HOURS_48 = 48 * 60 * 60 * 1000;
 const Dashboard = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [bankR, setBankR] = useState([]);
   const [search, setSearch] = useState("");
@@ -46,8 +46,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-
-        const verifyCaptchaAccess = () => {
+    const verifyCaptchaAccess = () => {
       const lastVerified = localStorage.getItem("captcha_verified_at");
 
       if (!lastVerified) {
@@ -328,14 +327,14 @@ const Dashboard = () => {
 
   const ressetMyPassword = async () => {
     setLoading(true);
-  
+
     const Admin = JSON.parse(localStorage.getItem("admin1"));
     if (!Admin || !Admin.email) {
       toast.error("Admin not logged in");
       setLoading(false);
       return;
     }
-  
+
     const adminEmail = Admin.email;
     const { currentPassword, newPassword, confirmPassword } = ressetPassword;
 
@@ -344,32 +343,32 @@ const Dashboard = () => {
       setLoading(false);
       return;
     }
-  
+
     if (!newPassword) {
       toast.error("Enter New Password!");
       setLoading(false);
       return;
     }
-  
+
     if (!confirmPassword) {
       toast.error("Enter Confirm Password!");
       setLoading(false);
       return;
     }
-  
+
     if (newPassword !== confirmPassword) {
       toast.error("Confirm password must match new password!");
       setLoading(false);
       return;
     }
-  
+
     try {
       const res = await axios.post("/resetMyPassword", {
         adminEmail,
         currentPassword,
         newPassword,
       });
-  
+
       if (res.data.status === "success") {
         toast.success("Password Updated Successfully");
         setRessetPassword({
@@ -382,12 +381,12 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error( "Server error");
+      toast.error("Server error");
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <div
       className="d-flex flex-column min-vh-100 dark"
@@ -564,7 +563,7 @@ const Dashboard = () => {
                                       day: "numeric",
                                       hour: "numeric",
                                       hour12: true,
-                                    }
+                                    },
                                   )}
                                 </td>
 
@@ -609,7 +608,7 @@ const Dashboard = () => {
                     <Badge bg="warning">
                       {Array.isArray(bankR)
                         ? bankR.filter(
-                            (v) => v.status?.toLowerCase().trim() === "pending"
+                            (v) => v.status?.toLowerCase().trim() === "pending",
                           ).length
                         : 0}
                       : Pending
@@ -700,8 +699,8 @@ const Dashboard = () => {
                                       r.status === "Approved"
                                         ? "success"
                                         : r.status === "Decline"
-                                        ? "danger"
-                                        : "danger"
+                                          ? "danger"
+                                          : "danger"
                                     }
                                   >
                                     {r.status}
@@ -766,7 +765,7 @@ const Dashboard = () => {
                     <Badge bg="warning">
                       {Array.isArray(cryptoR)
                         ? cryptoR.filter(
-                            (v) => v.status?.toLowerCase().trim() === "pending"
+                            (v) => v.status?.toLowerCase().trim() === "pending",
                           ).length
                         : 0}
                       : Pending
@@ -860,8 +859,8 @@ const Dashboard = () => {
                                       v.status === "Approved"
                                         ? "success"
                                         : v.status === "decline"
-                                        ? "danger"
-                                        : "warning"
+                                          ? "danger"
+                                          : "warning"
                                     }
                                   >
                                     {v.status}
