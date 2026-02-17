@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Card,
@@ -30,11 +31,31 @@ const Dashboard = () => {
     window.location.href = "/login";
   }
 
+  const HOURS_48 = 48 * 60 * 60 * 1000;
   useEffect(() => {
+    const navigate = useNavigate();
     const newU = localStorage.getItem("user");
     const newUser = JSON.parse(newU);
     const email = newUser.email;
     const ID = newUser._id;
+
+    const verifyCaptchaAccess = () => {
+      const lastVerified = localStorage.getItem("captcha_verified_at");
+
+      if (!lastVerified) {
+        navigate("/captcha");
+        return;
+      }
+
+      const diff = Date.now() - parseInt(lastVerified);
+
+      if (diff > HOURS_48) {
+        localStorage.removeItem("captcha_verified_at");
+        navigate("/captcha");
+      }
+    };
+
+    verifyCaptchaAccess();
 
     const getUser = async () => {
       await axios.post("/getUser", { email }).then((data) => {
@@ -68,7 +89,7 @@ const Dashboard = () => {
 
     const FavTokens = () => {
       const socket = new WebSocket(
-        "wss://bitclub-websocket.onrender.com/ws/ticker"
+        "wss://bitclub-websocket.onrender.com/ws/ticker",
       );
 
       socket.onopen = () => {
@@ -106,7 +127,7 @@ const Dashboard = () => {
     const cleanup = FavTokens();
 
     return cleanup;
-  }, []);
+  }, [navigate]);
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible((prev) => !prev);
@@ -329,17 +350,20 @@ const Dashboard = () => {
                   <div style={{ maxHeight: "400px", overflowY: "auto" }}>
                     {Object.keys(pricesTicker)
                       .sort()
-                      .slice(0, 100) 
+                      .slice(0, 100)
                       .map((symbol) => {
                         const coin = pricesTicker[symbol];
                         if (!coin) return null;
 
                         const price = parseFloat(coin.lastPrice).toLocaleString(
                           undefined,
-                          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
                         );
                         const changePercent = parseFloat(
-                          coin.priceChangePercent
+                          coin.priceChangePercent,
                         );
                         const isPositive = changePercent >= 0;
                         const volume = parseFloat(coin.volume).toLocaleString();
@@ -386,7 +410,7 @@ const Dashboard = () => {
                       .sort(
                         (a, b) =>
                           parseFloat(pricesTicker[b].volume) -
-                          parseFloat(pricesTicker[a].volume)
+                          parseFloat(pricesTicker[a].volume),
                       )
                       .slice(0, 10) // top 10 trending
                       .map((symbol) => {
@@ -395,10 +419,13 @@ const Dashboard = () => {
 
                         const price = parseFloat(coin.lastPrice).toLocaleString(
                           undefined,
-                          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
                         );
                         const changePercent = parseFloat(
-                          coin.priceChangePercent
+                          coin.priceChangePercent,
                         );
                         const isPositive = changePercent >= 0;
                         const volume = parseFloat(coin.volume).toLocaleString();
@@ -445,7 +472,7 @@ const Dashboard = () => {
                       .sort(
                         (a, b) =>
                           parseFloat(pricesTicker[b].priceChangePercent) -
-                          parseFloat(pricesTicker[a].priceChangePercent)
+                          parseFloat(pricesTicker[a].priceChangePercent),
                       )
                       .slice(0, 10) // top 10 gainers
                       .map((symbol) => {
@@ -454,10 +481,13 @@ const Dashboard = () => {
 
                         const price = parseFloat(coin.lastPrice).toLocaleString(
                           undefined,
-                          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
                         );
                         const changePercent = parseFloat(
-                          coin.priceChangePercent
+                          coin.priceChangePercent,
                         );
                         const isPositive = changePercent >= 0;
                         const volume = parseFloat(coin.volume).toLocaleString();
@@ -504,7 +534,7 @@ const Dashboard = () => {
                       .sort(
                         (a, b) =>
                           parseFloat(pricesTicker[a].priceChangePercent) -
-                          parseFloat(pricesTicker[b].priceChangePercent)
+                          parseFloat(pricesTicker[b].priceChangePercent),
                       )
                       .slice(0, 10) // top 10 losers
                       .map((symbol) => {
@@ -513,10 +543,13 @@ const Dashboard = () => {
 
                         const price = parseFloat(coin.lastPrice).toLocaleString(
                           undefined,
-                          { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          },
                         );
                         const changePercent = parseFloat(
-                          coin.priceChangePercent
+                          coin.priceChangePercent,
                         );
                         const isPositive = changePercent >= 0;
                         const volume = parseFloat(coin.volume).toLocaleString();

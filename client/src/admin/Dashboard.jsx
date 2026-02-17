@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import axios from "axios";
@@ -24,7 +24,9 @@ import AdminDashboardNav from "../admin/Nav/AdminDashboardNav";
 import Widget102 from "../components/Widget102";
 import toast from "react-hot-toast";
 
+const HOURS_48 = 48 * 60 * 60 * 1000;
 const Dashboard = () => {
+    const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [bankR, setBankR] = useState([]);
   const [search, setSearch] = useState("");
@@ -44,6 +46,25 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+
+        const verifyCaptchaAccess = () => {
+      const lastVerified = localStorage.getItem("captcha_verified_at");
+
+      if (!lastVerified) {
+        navigate("/captcha");
+        return;
+      }
+
+      const diff = Date.now() - parseInt(lastVerified);
+
+      if (diff > HOURS_48) {
+        localStorage.removeItem("captcha_verified_at");
+        navigate("/captcha");
+      }
+    };
+
+    verifyCaptchaAccess();
+
     setLoading(true);
     const Admin = JSON.parse(localStorage.getItem("admin1"));
     const email = Admin.email;
@@ -88,7 +109,7 @@ const Dashboard = () => {
     getUsers();
     getBankRecords();
     getCryptoRecords();
-  }, []);
+  }, [navigate]);
 
   const addBalance = async () => {
     {

@@ -1,17 +1,41 @@
 import React from "react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Bitcoin } from "lucide-react";
-import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FadeLoader from "react-spinners/FadeLoader";
+import { Link, useNavigate } from "react-router-dom";
+
+const HOURS_48 = 48 * 60 * 60 * 1000;
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyCaptchaAccess = () => {
+      const lastVerified = localStorage.getItem("captcha_verified_at");
+
+      if (!lastVerified) {
+        navigate("/captcha");
+        return;
+      }
+
+      const diff = Date.now() - parseInt(lastVerified);
+
+      if (diff > HOURS_48) {
+        localStorage.removeItem("captcha_verified_at");
+        navigate("/captcha");
+      }
+    };
+
+    verifyCaptchaAccess();
+  }, [navigate]);
 
   const login = async (event) => {
     event.preventDefault();
@@ -52,7 +76,9 @@ const Login = () => {
               className="d-flex align-items-center text-decoration-none"
             >
               <Bitcoin className="h-6 w-6 text-bitradex-orange" />
-              <span className="ms-2 fs-4 text-light fw-bold">PrimeVest-Markets</span>
+              <span className="ms-2 fs-4 text-light fw-bold">
+                PrimeVest-Markets
+              </span>
             </Link>
           </div>
           <h5 className="fw-bold text-light mb-1">Sign in</h5>

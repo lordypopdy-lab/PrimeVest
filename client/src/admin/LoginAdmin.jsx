@@ -1,17 +1,39 @@
 import React from "react";
 import { Bitcoin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FadeLoader from "react-spinners/FadeLoader";
 
+const HOURS_48 = 48 * 60 * 60 * 1000;
 const LoginAdmin = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
+
+        useEffect(() => {
+        const verifyCaptchaAccess = () => {
+          const lastVerified = localStorage.getItem("captcha_verified_at");
+    
+          if (!lastVerified) {
+            navigate("/captcha");
+            return;
+          }
+    
+          const diff = Date.now() - parseInt(lastVerified);
+    
+          if (diff > HOURS_48) {
+            localStorage.removeItem("captcha_verified_at");
+            navigate("/captcha");
+          }
+        };
+    
+        verifyCaptchaAccess();
+      }, [navigate]);
 
   const login = async (event) => {
     event.preventDefault();
@@ -59,7 +81,9 @@ const LoginAdmin = () => {
               className="d-flex align-items-center text-decoration-none"
             >
               <Bitcoin className="h-6 w-6" style={{ color: "orange" }} />
-              <span className="ms-2 fs-4 text-light fw-bold">PrimeVest-Markets</span>
+              <span className="ms-2 fs-4 text-light fw-bold">
+                PrimeVest-Markets
+              </span>
             </Link>
           </div>
           <h5 className="fw-bold text-light mb-1">Admin | Sign in</h5>

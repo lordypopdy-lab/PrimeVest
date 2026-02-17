@@ -10,41 +10,48 @@ import LoginAdmin from "./admin/LoginAdmin";
 import AdminChatPage from "./admin/AdminChatPage";
 import DashboardLayout from "./components/Nav/DashboardLayout";
 
-import axios from 'axios';
-import { Toaster } from 'react-hot-toast';
+import Captcha from "./pages/Captcha";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "./index.css"
+import axios from "axios";
+import { Toaster } from "react-hot-toast";
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 
-axios.defaults.baseURL = 'Thttps://prime-vest-server.vercel.app';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
+
+axios.defaults.baseURL = "Thttps://prime-vest-server.vercel.app";
 axios.defaults.withCredentials = true;
 
-//http://localhost:8080 
+//http://localhost:8080
 
 function App() {
 
   return (
     <>
-    <Toaster position='top-right' toastOptions={{ duration: 4000 }} />
-    <Router>
-      <Routes>
-        <Route index="/" element={<Index />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/admin" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/deposit" element={<Deposit />} />
-        <Route path="/withdraw" element={<Withdraw />} />
-        <Route path="/login-admin" element={<LoginAdmin />} />
-        <Route path="/dashboard" element={<DashboardLayout />} />
-        <Route path="/admin-chat-page" element={<AdminChatPage />} />
-      </Routes>
-    </Router>
-  </>
-  )
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+      <Router>
+        <Routes>
+          <Route index="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/captcha" element={<Captcha />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/withdraw" element={<Withdraw />} />
+          <Route path="/login-admin" element={<LoginAdmin />} />
+          <Route path="/dashboard" element={<DashboardLayout />} />
+          <Route path="/admin-chat-page" element={<AdminChatPage />} />
+        </Routes>
+      </Router>
+    </>
+  );
 }
 
-export default App
+export default App;
