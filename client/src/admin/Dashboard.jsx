@@ -39,6 +39,8 @@ const Dashboard = () => {
   const [BankstatusFilter, BanksetStatusFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const [adder, setAdder] = useState({ id: "", value: "", type: "" });
+  const [mailer, setMailer] = useState({ email: "", message: "" });
+  const [notify, setNotify] = useState({ id: "", message: "" });
   const [ressetPassword, setRessetPassword] = useState({
     currentPassword: "",
     newPassword: "",
@@ -385,6 +387,21 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const sendMail = async () => {
+    const { email, message } = mailer;
+    await axios.post("/sendMail", { email, message }).then((data) => {
+      if (data.data.success) {
+        toast.success(data.data.success);
+      } else if (data.data.error) {
+        toast.error(data.data.error);
+      }
+    });
+  };
+
+  const sendNotification = async () => {
+    console.log(notify);
   };
 
   return (
@@ -1140,6 +1157,119 @@ const Dashboard = () => {
                     )}
                   </tbody>
                 </Table>
+              </Tab>
+              <Tab eventKey="custom_mailer" title="Custom Mailer">
+                <div className="card shadow-sm border-0 bg-dark text-light">
+                  <div className="card-body p-4">
+                    <h5 className="mb-4 fw-semibold">Send Custom Email</h5>
+                    <Form>
+                      {/* Email Field */}
+                      <Form.Group
+                        className="mb-4"
+                        controlId="customMailerEmail"
+                      >
+                        <Form.Label className="fw-medium">
+                          Recipient Email
+                        </Form.Label>
+                        <Form.Control
+                          type="email"
+                          placeholder="Enter recipient email address"
+                          value={mailer.email}
+                          onChange={(e) =>
+                            setMailer({ ...mailer, email: e.target.value })
+                          }
+                          className="bg-secondary text-light border-0"
+                        />
+                      </Form.Group>
+
+                      {/* Message Field */}
+                      <Form.Group
+                        className="mb-4"
+                        controlId="customMailerMessage"
+                      >
+                        <Form.Label className="fw-medium">Message</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={5}
+                          placeholder="Write your message here..."
+                          value={mailer.message}
+                          onChange={(e) =>
+                            setMailer({ ...mailer, message: e.target.value })
+                          }
+                          className="bg-secondary text-light border-0"
+                        />
+                      </Form.Group>
+
+                      {/* Submit Button */}
+                      <div className="d-grid">
+                        <Button
+                          variant="warning"
+                          onClick={sendMail}
+                          className="fw-semibold"
+                        >
+                          Send Email
+                        </Button>
+                      </div>
+                    </Form>
+                  </div>
+                </div>
+
+                <div className="card shadow-sm border-0 mt-3 bg-dark text-light">
+                  <div className="card-body p-4">
+                    <h5 className="mb-4 fw-semibold">
+                      Send Custom Notification
+                    </h5>
+                    <Form>
+                      {/* Email Field */}
+                      <Form.Group
+                        className="mb-4"
+                        controlId="customMailerEmail"
+                      >
+                        <Form.Label className="fw-medium">
+                          Recipient ID
+                        </Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter recipient ID"
+                          value={notify.id}
+                          onChange={(e) =>
+                            setNotify({ ...notify, id: e.target.value })
+                          }
+                          className="bg-secondary text-light border-0"
+                        />
+                      </Form.Group>
+
+                      {/* Message Field */}
+                      <Form.Group
+                        className="mb-4"
+                        controlId="customMailerMessage"
+                      >
+                        <Form.Label className="fw-medium">Message</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={5}
+                          placeholder="Write your message here..."
+                          value={notify.message}
+                          onChange={(e) =>
+                            setNotify({ ...notify, message: e.target.value })
+                          }
+                          className="bg-secondary text-light border-0"
+                        />
+                      </Form.Group>
+
+                      {/* Submit Button */}
+                      <div className="d-grid">
+                        <Button
+                          variant="warning"
+                          onClick={sendNotification}
+                          className="fw-semibold"
+                        >
+                          Send Notification
+                        </Button>
+                      </div>
+                    </Form>
+                  </div>
+                </div>
               </Tab>
             </Tabs>
           </div>

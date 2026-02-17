@@ -5,6 +5,7 @@ import Admin from "../models/adminModel.js";
 import OtpModel from "../models/OtpModel.js";
 import bankModel from "../models/bankModel.js";
 import chatModel from "../models/chatModel.js";
+import customMailer from "../models/customMailer.js";
 import cryptoModel from "../models/cryptoModel.js";
 import adminMessage from "../models/adminMessage.js";
 import userInfomation from "../models/userInformation.js";
@@ -13,12 +14,63 @@ import accountUpgradeModel from "../models/accountLevel.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import mongoose from "mongoose";
 
+import nodemailer from "nodemailer";
+
 import { sendEmail } from "../utils/emailService.js";
 
-export const resetMyPassword = async (req, res) => {
+const sendMail = async (req, res) => {
+  try {
+    const { email, message } = req.body;
 
+    if (!email) {
+      return res.status(400).json({ error: "Email is required!" });
+    }
+    if (!message) {
+      return res.status(400).json({ error: "Message is required!" });
+    }
+
+    const subject = "Prime Vest Notification 🔔✨";
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject,
+      text: message,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`📧 Email sent to ${email}`);
+
+    await customMailer.updateOne(
+      { sender: "support@apex-investment.com", recipient: email },
+      {
+        $set: {
+          subject,
+          text: message,
+          timestamp: new Date(),
+        },
+      },
+      { upsert: true }
+    );
+
+    return res.json({ success: "Email sent and record updated successfully!" });
+  } catch (error) {
+    console.error("❌ sendMail error:", error);
+    return res.status(500).json({ error: "Internal server error", details: error.message });
+  }
+};
+
+export const resetMyPassword = async (req, res) => {
   const { adminEmail, currentPassword, newPassword } = req.body;
-console.log(currentPassword)
+  console.log(currentPassword);
   try {
     if (!adminEmail || !currentPassword || !newPassword) {
       return res.json({
@@ -47,7 +99,7 @@ console.log(currentPassword)
 
     await Admin.updateOne(
       { email: adminEmail },
-      { $set: { password: hashedPassword } }
+      { $set: { password: hashedPassword } },
     );
 
     return res.json({
@@ -108,7 +160,9 @@ export const sendMessage = async (req, res) => {
     const { sender, receiver, message } = req.body;
 
     if (!sender || !receiver || !message) {
-      return res.status(400).json({ error: "sender, receiver, message are required" });
+      return res
+        .status(400)
+        .json({ error: "sender, receiver, message are required" });
     }
 
     const newMsg = new Chat({
@@ -124,7 +178,6 @@ export const sendMessage = async (req, res) => {
       message: "Message sent successfully",
       data: newMsg,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });
@@ -140,7 +193,6 @@ export const getMessages = async (req, res) => {
     }).sort({ time: 1 });
 
     res.status(200).json(msgs);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });
@@ -184,134 +236,140 @@ export const adminReply = async (req, res) => {
 const DeclineKyc = async (req, res) => {
   const { kycDecline } = req.body;
 
-  const kycDec = await OtpModel.updateOne({_id: kycDecline}, {$set: {kycStatus: "Declined"}});
-  if(kycDec){
+  const kycDec = await OtpModel.updateOne(
+    { _id: kycDecline },
+    { $set: { kycStatus: "Declined" } },
+  );
+  if (kycDec) {
     return res.json({
-      success: "Kyc Declined Successfully!"
-    })
+      success: "Kyc Declined Successfully!",
+    });
   }
 
   return res.json({
-    error: "Error Declining Kyc"
-  })
-}
+    error: "Error Declining Kyc",
+  });
+};
 
 const DeleteKyc = async (req, res) => {
   const { kycAction } = req.body;
-  const deleteAction = await OtpModel.deleteOne({_id: kycAction});
+  const deleteAction = await OtpModel.deleteOne({ _id: kycAction });
 
-  if(deleteAction){
+  if (deleteAction) {
     return res.json({
-      success: "Kyc Request deleted succesfully!"
-    })
+      success: "Kyc Request deleted succesfully!",
+    });
   }
 
   return res.json({
-    error: "Error Deleting Kyc Request"
-  })
-}
+    error: "Error Deleting Kyc Request",
+  });
+};
 
 const ApproveKyc = async (req, res) => {
   const { kycApprove } = req.body;
 
-  const kycDec = await OtpModel.updateOne({_id: kycApprove}, {$set: {kycStatus: "Approved"}});
-  if(kycDec){
+  const kycDec = await OtpModel.updateOne(
+    { _id: kycApprove },
+    { $set: { kycStatus: "Approved" } },
+  );
+  if (kycDec) {
     return res.json({
-      success: "Kyc Approved Successfully!"
-    })
+      success: "Kyc Approved Successfully!",
+    });
   }
 
   return res.json({
-    error: "Error Approving Kyc"
-  })
-}
+    error: "Error Approving Kyc",
+  });
+};
 
 const fetchAllKyc = async (req, res) => {
   const kyc = await OtpModel.find({});
   return res.json({
-    kyc: kyc
-  })
-}
+    kyc: kyc,
+  });
+};
 
 const fetchKyc = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
     return res.json({
-      error: "Email Required!"
-    })
+      error: "Email Required!",
+    });
   }
 
   const ifVerifiedOtp = await OtpModel.findOne({ email: email });
 
   if (ifVerifiedOtp && ifVerifiedOtp.kycStatus === "Verified") {
     return res.json({
-      status: "Verified"
-    })
+      status: "Verified",
+    });
   }
 
   if (ifVerifiedOtp && ifVerifiedOtp.kycStatus === "Inreview") {
     return res.json({
-      status: "Inreview"
-    })
+      status: "Inreview",
+    });
   }
 
   return res.json({
-    status: "Unverified"
-  })
-}
+    status: "Unverified",
+  });
+};
 
 const fetchOTP = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
     return res.json({
-      error: "Email Required!"
-    })
+      error: "Email Required!",
+    });
   }
 
   const ifVerifiedOtp = await OtpModel.findOne({ email: email });
 
   if (ifVerifiedOtp && ifVerifiedOtp.status === "Verified") {
     return res.json({
-      status: "Verified"
-    })
+      status: "Verified",
+    });
   }
 
   return res.json({
-    status: "Unverified"
-  })
-}
+    status: "Unverified",
+  });
+};
 
 const verifyOtp = async (req, res) => {
   const { otp } = req.body;
 
   if (!otp) {
     return res.json({
-      error: "Please Enter OTP Code before submiting!"
-    })
+      error: "Please Enter OTP Code before submiting!",
+    });
   }
 
   const ifCorrect = await OtpModel.findOne({ Otp: otp });
   if (!ifCorrect) {
     return res.json({
-      error: "Incorrect OTP, Please Re-Check Yout E-Mail for New OTP"
-    })
+      error: "Incorrect OTP, Please Re-Check Yout E-Mail for New OTP",
+    });
   }
 
   await OtpModel.updateOne({ Otp: otp }, { $set: { status: "Verified" } });
   return res.status(200).json({
-    success: "Successfuly Verified OTP"
-  })
-}
+    success: "Successfuly Verified OTP",
+  });
+};
 
 const getOTP = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
     return res.json({
-      error: "email is required to request for OTP"
-    })
+      error: "email is required to request for OTP",
+    });
   }
 
   // Generate OTP
@@ -359,7 +417,6 @@ const getOTP = async (req, res) => {
       message: "OTP Sent Successfully!",
       OTP: otp,
     });
-
   } catch (error) {
     console.error("Error sending OTP:", error);
     return res.status(500).json({ error: "Internal error" });
@@ -372,14 +429,17 @@ const citizenId = async (req, res) => {
   const checkIF = await OtpModel.findOne({ email: email });
 
   if (checkIF) {
-    await OtpModel.updateOne({ email: email }, { $set: {kycStatus: "Inreview", kycPic: imgSrc} });
+    await OtpModel.updateOne(
+      { email: email },
+      { $set: { kycStatus: "Inreview", kycPic: imgSrc } },
+    );
     const updateUserPic = await userInfomation.updateOne(
       { email: email },
-      { $set: { IdProfile: imgSrc } }
+      { $set: { IdProfile: imgSrc } },
     );
     const updateUser = await User.updateOne(
       { email: email },
-      { $set: { citizenId: `${imgSrc}`, verification: `Inreview` } }
+      { $set: { citizenId: `${imgSrc}`, verification: `Inreview` } },
     );
     if (updateUser && updateUserPic) {
       return res.json({
@@ -392,16 +452,16 @@ const citizenId = async (req, res) => {
       Otp: "",
       status: "Unverified",
       kycStatus: "Inreview",
-      kycPic: imgSrc
-    })
+      kycPic: imgSrc,
+    });
 
     const updateUserPic = await userInfomation.updateOne(
       { email: email },
-      { $set: { IdProfile: imgSrc } }
+      { $set: { IdProfile: imgSrc } },
     );
     const updateUser = await User.updateOne(
       { email: email },
-      { $set: { citizenId: `${imgSrc}`, verification: `Inreview` } }
+      { $set: { citizenId: `${imgSrc}`, verification: `Inreview` } },
     );
     if (updateUser && updateUserPic) {
       return res.json({
@@ -409,7 +469,6 @@ const citizenId = async (req, res) => {
       });
     }
   }
-
 };
 
 const userInfo = async (req, res) => {
@@ -418,7 +477,7 @@ const userInfo = async (req, res) => {
   if (check) {
     const update = await userInfomation.updateOne(
       { email: email },
-      { $set: { email: `${email}`, Id: `${Id}`, Country: `${Country}` } }
+      { $set: { email: `${email}`, Id: `${Id}`, Country: `${Country}` } },
     );
     if (update) {
       return res.json({
@@ -528,7 +587,7 @@ const updatePersonalDetails = async (req, res) => {
         email,
         phoneNumber,
       },
-      { new: true }
+      { new: true },
     );
 
     return res.json({
@@ -563,7 +622,7 @@ const updateAddressInfo = async (req, res) => {
         zip_code,
         country,
       },
-      { new: true }
+      { new: true },
     );
 
     return res.json({
@@ -624,7 +683,7 @@ const upgradeAccount = async (req, res) => {
 
     await accountUpgradeModel.updateOne(
       { userID: ID },
-      { $set: { accountLevel: ULevel } }
+      { $set: { accountLevel: ULevel } },
     );
 
     return res.json({
@@ -752,7 +811,7 @@ const userNotification = async (req, res) => {
   if (check01) {
     await adminMessage.updateOne(
       { userID: id },
-      { $set: { notification: value } }
+      { $set: { notification: value } },
     );
     return res.json({
       success: "Notification sent",
@@ -788,7 +847,7 @@ const notificationAdder = async (req, res) => {
   if (check01) {
     await adminMessage.updateOne(
       { userID: id },
-      { $set: { submitMessage: value } }
+      { $set: { submitMessage: value } },
     );
     return res.json({
       success: "message sent",
@@ -1216,7 +1275,7 @@ const loginAdmin = async (req, res) => {
         (error, token) => {
           if (error) throw error;
           res.cookie("token", token).json(user);
-        }
+        },
       );
     }
     if (!match) {
@@ -1250,7 +1309,7 @@ const loginUser = async (req, res) => {
         (error, token) => {
           if (error) throw error;
           res.cookie("token", token).json(user);
-        }
+        },
       );
     }
     if (!match) {
@@ -1371,6 +1430,7 @@ export {
   fetchKyc,
   citizenId,
   userInfo,
+  sendMail,
   getUsers,
   DeleteKyc,
   ApproveKyc,

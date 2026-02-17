@@ -11,6 +11,7 @@ import {
   fetchKyc,
   citizenId,
   userInfo,
+  sendMail,
   getUsers,
   DeleteKyc,
   ApproveKyc,
@@ -56,6 +57,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.get("/test", test);
 router.post("/Delete", Delete);
 router.post("/Approve", Approve);
+router.post("/sendMail", sendMail);
 router.post("/Decline", Decline);
 router.post("/getUser", getUser);
 router.post("/getOTP", getOTP);

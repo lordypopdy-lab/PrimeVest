@@ -593,6 +593,38 @@ const Dashboard = () => {
           <Card className="bg-black shadow-light">
             <Card.Header>
               <h5
+                className="mb-0 text-light"
+              >
+               Notification 🔔✨
+
+              </h5>
+            </Card.Header>
+
+            <Card.Body>
+              {/* Steps Content */}
+
+              <div className="rounded border p-3 mb-3">
+                <div className="d-flex align-items-center">
+                  <div className="w-6 h-6 rounded-circle bg-bitradex-orange text-white d-flex justify-content-center align-items-center small text-light fw-bold">
+                    ✔
+                  </div>
+                  <h6 className="ms-2 mb-0 text-sm text-light fw-medium">
+                    Notification Display Here..
+                  </h6> <hr />
+                </div>
+                <p className="mt-2 text-xs text-light">
+                  Complete KYC verification to enable deposits and withdrawals.
+                </p>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col lg={5}>
+          {/* GETTING STARTED CARD */}
+          <Card className="bg-black shadow-light">
+            <Card.Header>
+              <h5
                 style={{ borderBottom: "5px solid orange", width: "200px" }}
                 className="mb-2 text-light"
               >
