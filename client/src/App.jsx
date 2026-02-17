@@ -24,7 +24,7 @@ import {
   Routes,
 } from "react-router-dom";
 
-axios.defaults.baseURL = "Thttps://prime-vest-server.vercel.app";
+axios.defaults.baseURL = "https://prime-vest-server.vercel.app";
 axios.defaults.withCredentials = true;
 
 //http://localhost:8080
