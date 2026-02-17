@@ -19,7 +19,10 @@ import Widget101 from "../components/Widget101";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
+const HOURS_48 = 48 * 60 * 60 * 1000;
+
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [balance, setBalance] = useState(0);
   const [priceBackup, setPriceBack] = useState({});
@@ -31,9 +34,7 @@ const Dashboard = () => {
     window.location.href = "/login";
   }
 
-  const HOURS_48 = 48 * 60 * 60 * 1000;
   useEffect(() => {
-    const navigate = useNavigate();
     const newU = localStorage.getItem("user");
     const newUser = JSON.parse(newU);
     const email = newUser.email;
