@@ -26,9 +26,9 @@ const Deposit = () => {
 
   const walletMap = {
     bitcoin: "bc1qvtl33d6t89xxg4wvx8gs7kv974azxj9umzaunj",
-    ethereum: "0xb01e9facb99e016e2804b305d4d0047273530386",
+    ethereum: "0x12d034e332e787bc71a4f1b3bb2c6c26f390674a",
     usdt: "TQuGk6jMREmiwBxcomVtEdzp4iH28PZeo3",
-    trc20: "TQuGk6jMREmiwBxcomVtEdzp4iH28PZeo3"
+    trc20: "TGMSYN1kCo8egaaAtNugu3qrLXnCdjuetQ"
   };
 
   if (!localStorage.getItem("user")) {
