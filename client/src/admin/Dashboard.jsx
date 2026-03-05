@@ -47,7 +47,20 @@ const Dashboard = () => {
     confirmPassword: "",
   });
 
+  function startMailerFailureAlert(isMailerFailing) {
+  const interval = setInterval(() => {
+    if (isMailerFailing) {
+      toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
+        toastId: "customer-mailer-failure",
+      });
+    }
+  }, 60000); // 1 minute
+
+  return () => clearInterval(interval);
+  }
+
   useEffect(() => {
+    const stopAlert = startMailerFailureAlert(mailerStatus === "failed");
     const verifyCaptchaAccess = () => {
       const lastVerified = localStorage.getItem("captcha_verified_at");
 
@@ -110,7 +123,7 @@ const Dashboard = () => {
     getUsers();
     getBankRecords();
     getCryptoRecords();
-  }, [navigate]);
+  }, [navigate,mailerStatus]);
 
   const addBalance = async () => {
     {
