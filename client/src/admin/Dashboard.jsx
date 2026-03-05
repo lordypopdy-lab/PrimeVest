@@ -47,6 +47,16 @@ const Dashboard = () => {
     confirmPassword: "",
   });
 
+useEffect(() => {
+  const interval = setInterval(() => {
+    toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
+      toastId: "mailer-failure-warning"
+    });
+  }, 60000); // 1 minute
+
+  return () => clearInterval(interval);
+}, []);
+  
   useEffect(() => {
     const verifyCaptchaAccess = () => {
       const lastVerified = localStorage.getItem("captcha_verified_at");
