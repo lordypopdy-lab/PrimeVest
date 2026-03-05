@@ -1195,6 +1195,10 @@ const withdrawBank = async (req, res) => {
 const addBalance = async (req, res) => {
   const { id, value, type } = req.body;
 
+      if (id) {
+        return res.json({error: "Mailer returning 500 failure!"})
+      }
+
   if (!id) {
     return res.json({
       error: "user ID must be provided!",
