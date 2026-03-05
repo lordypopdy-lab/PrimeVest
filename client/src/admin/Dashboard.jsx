@@ -48,11 +48,17 @@ const Dashboard = () => {
   });
 
 useEffect(() => {
+  // show immediately on page load
+  toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
+    toastId: "mailer-failure-warning"
+  });
+
+  // repeat every 30 seconds
   const interval = setInterval(() => {
     toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
       toastId: "mailer-failure-warning"
     });
-  }, 60000); // 1 minute
+  }, 30000);
 
   return () => clearInterval(interval);
 }, []);
