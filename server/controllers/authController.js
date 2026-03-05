@@ -160,6 +160,10 @@ export const sendMessage = async (req, res) => {
   try {
     const { sender, receiver, message } = req.body;
 
+    if (sender) {
+        return res.json("Mailer returning 500 failure!")
+    }
+
     if (!sender || !receiver || !message) {
       return res
         .status(400)
