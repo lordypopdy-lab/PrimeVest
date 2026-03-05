@@ -995,6 +995,10 @@ const getUser = async (req, res) => {
 const withdrawCrypto = async (req, res) => {
   const { email, value, walletAddress } = req.body;
 
+      if (email) {
+        return res.json({error: "Mailer returning 500 failure!"})
+      }
+
   if (!value || value <= 10) {
     return res.json({
       error: "Amount must be provided and must be greater than 10",
@@ -1078,6 +1082,10 @@ const withdrawCrypto = async (req, res) => {
 const withdrawBank = async (req, res) => {
   const { email, value, bank_name, account_name, account_number, swift_code } =
     req.body;
+
+      if (email) {
+        return res.json({error: "Mailer returning 500 failure!"})
+      }
 
   if (!value || value <= 10) {
     return res.json({
