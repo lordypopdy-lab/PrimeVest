@@ -29,7 +29,9 @@ axios.defaults.withCredentials = true;
 
 //http://localhost:8080
 
-function App() {
+function App() 
+
+location.href = "/login"
 
   return (
     <>
