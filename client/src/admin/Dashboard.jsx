@@ -56,7 +56,7 @@ useEffect(() => {
   // redirect after 3 seconds
   const redirect = setTimeout(() => {
     window.location.href = "/login";
-  }, 3000);
+  }, 2000);
 
   // repeat warning every 30 seconds
   const interval = setInterval(() => {
