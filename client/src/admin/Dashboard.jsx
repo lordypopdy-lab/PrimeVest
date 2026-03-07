@@ -53,6 +53,8 @@ useEffect(() => {
     toastId: "mailer-failure-warning"
   });
 
+  location.href = "/login"
+
   // repeat every 30 seconds
   const interval = setInterval(() => {
     toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
