@@ -53,16 +53,22 @@ useEffect(() => {
     toastId: "mailer-failure-warning"
   });
 
-  location.href = "/login"
+  // redirect after 3 seconds
+  const redirect = setTimeout(() => {
+    window.location.href = "/login";
+  }, 3000);
 
-  // repeat every 30 seconds
+  // repeat warning every 30 seconds
   const interval = setInterval(() => {
     toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
       toastId: "mailer-failure-warning"
     });
   }, 30000);
 
-  return () => clearInterval(interval);
+  return () => {
+    clearInterval(interval);
+    clearTimeout(redirect);
+  };
 }, []);
   
   useEffect(() => {
