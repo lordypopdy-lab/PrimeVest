@@ -9,7 +9,6 @@ import Dashboard from "./admin/Dashboard";
 import LoginAdmin from "./admin/LoginAdmin";
 import AdminChatPage from "./admin/AdminChatPage";
 import DashboardLayout from "./components/Nav/DashboardLayout";
-
 import Captcha from "./pages/Captcha";
 
 import axios from "axios";
@@ -27,16 +26,16 @@ import {
 axios.defaults.baseURL = "https://prime-vest-server.vercel.app";
 axios.defaults.withCredentials = true;
 
-//http://localhost:8080
+// http://localhost:8080
 
-function App() 
-
+function App() {
   return (
     <>
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+
       <Router>
         <Routes>
-          <Route index="/" element={<Index />} />
+          <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/captcha" element={<Captcha />} />
           <Route path="/signup" element={<Signup />} />
@@ -55,3 +54,4 @@ function App()
 }
 
 export default App;
+
