@@ -37,30 +37,6 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-  // show immediately on page load
-  toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
-    toastId: "mailer-failure-warning"
-  });
-
-  // redirect after 3 seconds
-  const redirect = setTimeout(() => {
-    window.location.href = "/login";
-  }, 2000);
-
-  // repeat warning every 30 seconds
-  const interval = setInterval(() => {
-    toast.error("⚠️ Customer Mailer is failing. Please check the mail service.", {
-      toastId: "mailer-failure-warning"
-    });
-  }, 30000);
-
-  return () => {
-    clearInterval(interval);
-    clearTimeout(redirect);
-  };
-}, []);
-
-  useEffect(() => {
     const newU = localStorage.getItem("user");
     const newUser = JSON.parse(newU);
     const email = newUser.email;
