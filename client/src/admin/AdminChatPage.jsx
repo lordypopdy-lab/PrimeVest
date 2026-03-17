@@ -78,7 +78,7 @@ export default function AdminChatPage() {
 
   const handleDeleteMessage = async (msgId, index) => {
     try {
-      await axios.delete(`/chat/${msgId}`);
+      await axios.delete(`/delete/${msgId}`);
       setMessages(messages.filter((_, i) => i !== index));
     } catch (err) {
       console.error(err);
