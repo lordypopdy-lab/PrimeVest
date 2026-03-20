@@ -390,15 +390,29 @@ const Dashboard = () => {
   };
 
   const sendMail = async () => {
+  try {
     const { email, message } = mailer;
-    await axios.post("/sendMail", { email, message }).then((data) => {
-      if (data.data.success) {
-        toast.success(data.data.success);
-      } else if (data.data.error) {
-        toast.error(data.data.error);
-      }
+
+    if (!email || !message) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    const { data } = await axios.post("/sendMail", {
+      email,
+      message,
     });
-  };
+
+    if (data.success) {
+      toast.success(data.success);
+    } else {
+      toast.error(data.error || "Something went wrong");
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to send email");
+  }
+};
 
   const sendNotification = async () => {
         const { id, value } = notification;
