@@ -11,6 +11,9 @@ import adminMessage from "../models/adminMessage.js";
 import userInfomation from "../models/userInformation.js";
 import accountUpgradeModel from "../models/accountLevel.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import mongoose from "mongoose";
 
