@@ -68,21 +68,22 @@ const Dashboard = () => {
     };
 
     const getUser = async () => {
-      await axios.post("/getUser", { email }).then((data) => {
-        if (data) {
-          setUser(data.data);
-          const tBalance =
-            data.data.deposit + data.data.profit + data.data.bonuse;
+  await axios.post("/getUser", { email }).then((data) => {
+    if (data) {
+      setUser(data.data);
 
-          const formattedBalance = new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }).format(tBalance);
+      const tBalance =
+        data.data.deposit + data.data.profit + data.data.bonuse;
 
-          setBalance(formattedBalance);
-        }
-      });
-    };
+      const formattedBalance = new Intl.NumberFormat(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(tBalance);
+
+      setBalance(formattedBalance);
+    }
+  });
+};
 
     const getUserVerification = async () => {
       try {
