@@ -26,7 +26,7 @@ import {
 axios.defaults.baseURL = "https://prime-vest-server.vercel.app";
 axios.defaults.withCredentials = true;
 
-// http://localhost:8080
+//  http://localhost:8080 for local development
 
 function App() {
   return (

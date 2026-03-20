@@ -25,7 +25,6 @@ const sendMail = async (req, res) => {
   try {
     const { email, message } = req.body;
 
-    // ✅ Validation
     if (!email) {
       return res.status(400).json({ error: "Email is required!" });
     }
@@ -33,43 +32,26 @@ const sendMail = async (req, res) => {
       return res.status(400).json({ error: "Message is required!" });
     }
 
-    const subject = "Prime Vest Notification 🔔✨";
+    const subject = "PrimeVest Notification 🔔";
 
-    // ✅ Use proper Gmail SMTP config (NOT just "service")
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true, // true for port 465
+      service: "gmail",
       auth: {
-        user: "marketcoin823@gmail.com",
-        pass: "YOUR_APP_PASSWORD_HERE", // 🔴 REPLACE THIS
-      },
-      tls: {
-        rejectUnauthorized: false, // ⚠️ helps fix SSL issues (safe for dev)
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // ✅ Verify connection before sending (VERY IMPORTANT)
-    await transporter.verify();
-
     const mailOptions = {
-      from: `"Prime Vest" <marketcoin823@gmail.com>`,
+      from: process.env.EMAIL_USER,
       to: email,
-      subject: subject,
+      subject,
       text: message,
-      html: `
-        <div style="font-family: Arial; padding: 10px;">
-          <h3>Prime Vest Notification 🔔</h3>
-          <p>${message}</p>
-        </div>
-      `,
     };
 
-    // ✅ Send email
-    const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", info.response);
+    await transporter.sendMail(mailOptions);
+    console.log(`📧 Email sent to ${email}`);
 
-    // ✅ Save/update DB record
     await customMailer.updateOne(
       { sender: "support@apex-investment.com", recipient: email },
       {
@@ -82,17 +64,10 @@ const sendMail = async (req, res) => {
       { upsert: true }
     );
 
-    return res.status(200).json({
-      success: "Email sent and record updated successfully!",
-    });
-
+    return res.json({ success: "Email sent and record updated successfully!" });
   } catch (error) {
-    console.error("❌ FULL ERROR:", error);
-
-    return res.status(500).json({
-      error: "Failed to send email",
-      details: error.message,
-    });
+    console.error("❌ sendMail error:", error);
+    return res.status(500).json({ error: "Internal server error", details: error.message });
   }
 };
 
