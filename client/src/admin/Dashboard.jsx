@@ -1228,13 +1228,9 @@ const Dashboard = () => {
 
                       {/* Submit Button */}
                       <div className="d-grid">
-                        <Button
-                          variant="warning"
-                          onClick={sendMail}
-                          className="fw-semibold"
-                        >
-                          Send Email
-                        </Button>
+                        <Button type="button" onClick={sendMail}>
+  Send Email
+</Button>
                       </div>
                     </Form>
                   </div>
