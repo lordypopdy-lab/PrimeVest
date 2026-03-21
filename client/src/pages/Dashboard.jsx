@@ -271,7 +271,7 @@ const Dashboard = () => {
                     }).format(user?.profit || 0)}
                   </>
                 ) : (
-                  "******"
+                   "******"
                 )}
               </div>
               <p className="text-xs text-success">$0.00</p>
@@ -280,60 +280,65 @@ const Dashboard = () => {
         </Col>
 
         <Col md={6} lg={3}>
-          <Card className="bg-black shadow-light">
-            <Card.Header className="d-flex justify-content-between align-items-center pb-2">
-              <span className="text-sm text-light fw-medium">
-                Deposit Balance
-              </span>
-              <Coins className="h-4 w-4" style={{ color: "orange" }} />
-            </Card.Header>
-            <Card.Body>
-              <div className="fs-2 text-light fw-bold">
-                {isBalanceVisible ? (
-                  <>
-                    <span className="text-600">{user && user.currency}</span>
-                    {new Intl.NumberFormat("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }).format(user?.deposit || 0)}
-                  </>
-                ) : (
-                  "******"
-                )}
-              </div>
-              <p className="text-xs text-success">$0.00</p>
-            </Card.Body>
-          </Card>
-        </Col>
+  <Card className="bg-black shadow-light">
+    <Card.Header className="d-flex justify-content-between align-items-center pb-2">
+      <span className="text-sm text-light fw-medium">
+        Deposit Balance
+      </span>
+      <Coins className="h-4 w-4" style={{ color: "orange" }} />
+    </Card.Header>
+    <Card.Body>
+      <div className="fs-2 text-light fw-bold">
+        {isBalanceVisible ? (
+          <>
+            <span className="text-600">{user && user.currency}</span>
+            {new Intl.NumberFormat(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(Number(user?.deposit) || 0)}
+          </>
+        ) : (
+          "******"
+        )}
+      </div>
+      <p className="text-xs text-success">$0.00</p>
+    </Card.Body>
+  </Card>
+</Col>
 
-        <Col md={6} lg={3}>
-          <Card className="bg-black shadow-light">
-            <Card.Header className="d-flex justify-content-between align-items-center pb-2">
-              <span className="text-sm text-light fw-medium">Bonuse/Loss</span>
-              <LineChart className="h-4 w-4" style={{ color: "orange" }} />
-            </Card.Header>
-            <Card.Body>
-              <div className="fs-2 text-light fw-bold text-light">
-                {isBalanceVisible ? (
-                  <>
-                    <span className="text-600">{user && user.currency}</span>
-                    {new Intl.NumberFormat("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }).format(user?.bonuse || 0)}
-                  </>
-                ) : (
-                  "******"
-                )}
-              </div>
-              {parseFloat(balance.toString().replace(/,/g, "")) > 0 ? (
-                <p className="text-xs text-success">Investment in Progress..</p>
-              ) : (
-                <p className="text-xs text-light">No investments yet</p>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
+<Col md={6} lg={3}>
+  <Card className="bg-black shadow-light">
+    <Card.Header className="d-flex justify-content-between align-items-center pb-2">
+      <span className="text-sm text-light fw-medium">
+        Bonuse/Loss
+      </span>
+      <LineChart className="h-4 w-4" style={{ color: "orange" }} />
+    </Card.Header>
+    <Card.Body>
+      <div className="fs-2 text-light fw-bold text-light">
+        {isBalanceVisible ? (
+          <>
+            <span className="text-600">{user && user.currency}</span>
+            {new Intl.NumberFormat(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(Number(user?.bonuse) || 0)}
+          </>
+        ) : (
+          "******"
+        )}
+      </div>
+
+      {Number(user?.deposit || 0) +
+        Number(user?.profit || 0) +
+        Number(user?.bonuse || 0) > 0 ? (
+        <p className="text-xs text-success">Investment in Progress..</p>
+      ) : (
+        <p className="text-xs text-light">No investments yet</p>
+      )}
+    </Card.Body>
+  </Card>
+</Col>
       </Row>
 
       {/* MARKET OVERVIEW + GETTING STARTED */}
