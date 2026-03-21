@@ -978,16 +978,40 @@ const getBankRecords = async (req, res) => {
   return res.json({});
 };
 
+ const parseAmount = (value) => {
+  if (!value) return 0;
+
+  let val = String(value).replace(/\s/g, "");
+
+  if (val.includes(",") && val.includes(".")) {
+    val = val.replace(/\./g, "").replace(",", ".");
+  } else if (val.includes(",")) {
+    val = val.replace(",", ".");
+  }
+
+  return Number(val) || 0;
+};
+
 const getUser = async (req, res) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email: email });
+
   if (!user) {
     return res.json({
       error: "unidentyfied user",
     });
   }
-  return res.json(user);
+
+  // convert values to clean numbers
+  const cleanUser = {
+    ...user._doc,
+    deposit: parseAmount(user.deposit),
+    profit: parseAmount(user.profit),
+    bonuse: parseAmount(user.bonuse),
+  };
+
+  return res.json(cleanUser);
 };
 
 const withdrawCrypto = async (req, res) => {
