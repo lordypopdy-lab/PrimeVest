@@ -72,18 +72,9 @@ const Dashboard = () => {
     if (data) {
       setUser(data.data);
 
-      const parseNumber = (val) => {
-        if (!val) return 0;
-        return Number(
-          String(val)
-            .replace(/\./g, "")   // remove thousands separator
-            .replace(",", ".")    // convert decimal to dot
-        ) || 0;
-      };
-
-      const deposit = parseNumber(data.data.deposit);
-      const profit = parseNumber(data.data.profit);
-      const bonus = parseNumber(data.data.bonuse);
+      const deposit = data.data.deposit || 0;
+      const profit = data.data.profit || 0;
+      const bonus = data.data.bonuse || 0;
 
       const tBalance = deposit + profit + bonus;
 
