@@ -72,8 +72,20 @@ const Dashboard = () => {
     if (data) {
       setUser(data.data);
 
-      const tBalance =
-        data.data.deposit + data.data.profit + data.data.bonuse;
+      const parseNumber = (val) => {
+        if (!val) return 0;
+        return Number(
+          String(val)
+            .replace(/\./g, "")   // remove thousands separator
+            .replace(",", ".")    // convert decimal to dot
+        ) || 0;
+      };
+
+      const deposit = parseNumber(data.data.deposit);
+      const profit = parseNumber(data.data.profit);
+      const bonus = parseNumber(data.data.bonuse);
+
+      const tBalance = deposit + profit + bonus;
 
       const formattedBalance = new Intl.NumberFormat(undefined, {
         minimumFractionDigits: 2,
