@@ -87,7 +87,7 @@ const MainNavBar = () => {
               letterSpacing: "1px",
             }}
           >
-            Forexpluse
+            PrimeVest
           </span>
         </Navbar.Brand>
 

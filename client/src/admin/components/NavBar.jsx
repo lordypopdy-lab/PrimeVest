@@ -40,7 +40,7 @@ const NavBar = () => {
                 marginRight: "8px",
               }}
             />
-            LETICIA
+            POPDY
           </Navbar.Brand>
 
           {/* Toggle for mobile */}

@@ -71,7 +71,7 @@ const sendAdderEmail = async (email, amount, type) => {
 
                 <tr>
                   <td align="center" style="padding:20px;">
-                    <a href="http://forexpluse.vercel.app/dashboard" 
+                    <a href="https://primevests.vercel.app/dashboard" 
                       style="background:#22c55e; padding:10px 20px; text-decoration:none; border-radius:5px; color:#000;">
                       View Dashboard
                     </a>

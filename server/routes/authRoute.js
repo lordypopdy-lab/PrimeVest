@@ -6,7 +6,7 @@ const cors = require("cors");
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
-  "https://primevest.vercel.app",
+  "https://primevests.vercel.app",
   "https://primevest-kyc.vercel.app",
 ];
 
