@@ -504,7 +504,7 @@ const Admin = () => {
                     className="bg-dark text-white border-secondary rounded-3"
                   >
                     <option value="">Select adjustment type</option>
-                    <option value="bonus">Add Bonus</option>
+                    <option value="bonuse">Add Bonus</option>
                     <option value="profit">Add Profit</option>
                     <option value="deposit">Add Deposit</option>
                   </Form.Select>
@@ -532,7 +532,7 @@ const Admin = () => {
                   color: "#0f172a",
                 }}
               >
-                {isLoading1 ? "Processing..." : "Confirm Adjustment"}
+                {isLoading1 ? "Processing..." : "Confirm"}
               </Button>
             </Modal.Footer>
           </div>
@@ -703,7 +703,7 @@ const Admin = () => {
               className="border-0 pb-2"
             >
               <Modal.Title className="fw-bold text-warning">
-                Confirm Deletion
+                Confirm
               </Modal.Title>
             </Modal.Header>
 
@@ -737,7 +737,7 @@ const Admin = () => {
                 onClick={handleDeleteUser}
                 disabled={isDeleting}
               >
-                {isDeleting ? "Deleting..." : "Confirm Delete"}
+                {isDeleting ? "Deleting..." : "Delete"}
               </Button>
             </Modal.Footer>
           </div>
