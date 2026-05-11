@@ -36,11 +36,11 @@ const Deposite = () => {
                       {/* WALLET */}
                       <div
                         onClick={() =>
-                          handleCopy("142VM79zADHb85W9LwT7VrzqFmSPZhtHKu")
+                          handleCopy("19sY932BMVqbP9eP54qWsiYNBuFmy2eXgJ")
                         }
                         style={walletBox}
                       >
-                        142VM79zADHb85W9LwT7VrzqFm...
+                        19sY932BMVqbP9eP54qWsiYNBuFmy2eXgJ...
                         <i
                           className="fas fa-copy"
                           style={{ marginLeft: "8px" }}
@@ -74,12 +74,12 @@ const Deposite = () => {
                       <div
                         onClick={() =>
                           handleCopy(
-                            "0xaf8daae1cc72a8f9db1d096dec83cfec593fae87",
+                            "0xf095ead86782d5ec852e0bd40d52dfb6bd4a08b6",
                           )
                         }
                         style={walletBox}
                       >
-                        0xaf8daae1cc72a8f9db1d096d...
+                        0xf095ead86782d5ec852e0bd40d5...
                         <i
                           className="fas fa-copy"
                           style={{ marginLeft: "8px" }}
@@ -108,11 +108,11 @@ const Deposite = () => {
                     <div className="card-body">
                       <div
                         onClick={() =>
-                          handleCopy("TRLxvLahTfr87wYZEgecHjfrJjtffUAvmy")
+                          handleCopy("TKym8FK6kaLgKzGQnJx9oRmcWWYHYHdnx9")
                         }
                         style={walletBox}
                       >
-                        TRLxvLahTfr87wYZEgecHjfrJjtf....
+                        TKym8FK6kaLgKzGQnJx9oRmcWWYHYHdnx9....
                         <i
                           className="fas fa-copy"
                           style={{ marginLeft: "8px" }}
