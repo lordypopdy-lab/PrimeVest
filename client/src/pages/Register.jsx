@@ -397,6 +397,9 @@ const Register = () => {
               <option className="text-light" value="$">
                 DOLLAR $
               </option>
+              <option className="text-light" value="DZD">
+                Algerian Dinar DZD
+              </option>
               <option className="text-light" value="€">
                 EURO €
               </option>
